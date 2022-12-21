@@ -1,4 +1,5 @@
 import { User } from '../../models/user.js';
+import bcrypt from 'bcryptjs';
 export default class authController {
     static register(req, res) {
         return res.render('register');
@@ -25,14 +26,16 @@ export default class authController {
             } else if (userExists) {
                 return res.json({ message: 'Email already taken.' });
             } else {
+                const hashedPassword = await bcrypt.hash(password, 10);
                 const registerUser = new User({
                     firstName,
                     lastName,
                     email,
                     phone,
-                    password,
-                    cpassword,
+                    password: hashedPassword,
+                    cpassword: hashedPassword,
                 });
+
                 await registerUser.save();
                 return res.redirect('/');
             }
