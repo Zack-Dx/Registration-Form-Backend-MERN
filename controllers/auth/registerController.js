@@ -1,5 +1,6 @@
 import { User } from '../../models/user.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 export default class authController {
     static register(req, res) {
         return res.render('register');
@@ -35,6 +36,18 @@ export default class authController {
                     password: hashedPassword,
                     cpassword: hashedPassword,
                 });
+                // Generating Token
+                try {
+                    const token = jwt.sign(
+                        registerUser._id.toString(),
+                        process.env.mySecret
+                    );
+                    registerUser.tokens = registerUser.tokens.concat({
+                        token,
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
 
                 await registerUser.save();
                 return res.redirect('/');

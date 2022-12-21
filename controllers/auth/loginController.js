@@ -1,5 +1,8 @@
 import { User } from '../../models/user.js';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+dotenv.config();
+import jwt from 'jsonwebtoken';
 export default class loginController {
     static login(req, res) {
         return res.render('login');
@@ -16,6 +19,11 @@ export default class loginController {
                 emailExists.password
             );
             if (emailExists && checkPass) {
+                // TOKEN
+                const token = jwt.sign(
+                    emailExists._id.toString(),
+                    process.env.mySecret
+                );
                 return res.render('home');
             }
             return res.send('Invalid Credentials');
