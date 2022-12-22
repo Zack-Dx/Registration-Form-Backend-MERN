@@ -29,7 +29,7 @@ export default class loginController {
                     httpOnly: true,
                     // secure: true, (only for https)
                 });
-                return res.render('home');
+                return res.redirect('/');
             }
             return res.send('Invalid Credentials');
         } catch (error) {

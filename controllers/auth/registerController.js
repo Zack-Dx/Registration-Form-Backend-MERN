@@ -1,4 +1,13 @@
 import { User } from '../../models/user.js';
+import dotenv from 'dotenv';
+dotenv.config();
+import cloudinary from 'cloudinary';
+cloudinary.config({
+    cloud_name: process.env.Cloud_Name,
+    api_key: process.env.Cloud_API_key,
+    api_secret: process.env.Cloud_API_secret,
+    // secure: true,
+});
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 export default class authController {
@@ -7,10 +16,16 @@ export default class authController {
     }
     static async postRegister(req, res) {
         try {
-            const { firstName, lastName, email, phone, password, cpassword } =
-                req.body;
+            const {
+                firstName,
+                lastName,
+                email,
+                phone,
+                avatar,
+                password,
+                cpassword,
+            } = req.body;
             const userExists = await User.exists({ email });
-
             if (
                 !firstName ||
                 !lastName ||
@@ -27,15 +42,25 @@ export default class authController {
             } else if (userExists) {
                 return res.json({ message: 'Email already taken.' });
             } else {
+                const file = req.files.avatar;
+                const myCloud = await cloudinary.v2.uploader.upload(
+                    file.tempFilePath,
+                    { folder: 'userImage' }
+                );
                 const hashedPassword = await bcrypt.hash(password, 10);
                 const registerUser = new User({
                     firstName,
                     lastName,
                     email,
                     phone,
+                    avatar: {
+                        public_id: myCloud.public_id,
+                        url: myCloud.secure_url,
+                    },
                     password: hashedPassword,
                     cpassword: hashedPassword,
                 });
+
                 // Generating Token
                 try {
                     const token = jwt.sign(
@@ -57,8 +82,8 @@ export default class authController {
                 return res.redirect('/');
             }
         } catch (error) {
-            res.redirect('/register');
             console.log(error);
+            res.redirect('/register');
         }
     }
 }

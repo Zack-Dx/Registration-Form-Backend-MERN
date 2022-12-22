@@ -3,7 +3,7 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
-        minlength: 3,
+        minlength: 2,
     },
     lastName: {
         type: String,
@@ -29,6 +29,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 5,
+    },
+    avatar: {
+        public_id: {
+            type: String,
+            required: true,
+        },
+        url: {
+            type: String,
+            required: true,
+        },
     },
     tokens: [
         {

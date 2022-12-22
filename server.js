@@ -4,6 +4,7 @@ import { dbConnection } from './db/conn.js';
 import { router } from './routes/web.js';
 import expressLayouts from 'express-ejs-layouts';
 import cookieParser from 'cookie-parser';
+import fileUpload from 'express-fileupload';
 dotenv.config();
 
 const PORT = process.env.PORT;
@@ -17,6 +18,7 @@ app.set('view engine', 'ejs');
 //Router
 app.use(express.json());
 app.use(cookieParser());
+app.use(fileUpload({ useTempFiles: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(router);
 
