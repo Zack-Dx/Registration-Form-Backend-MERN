@@ -46,7 +46,7 @@ export default class authController {
                         token,
                     });
                     res.cookie('jwt', token, {
-                        expires: new Date(Date.now() + 30000),
+                        expires: new Date(Date.now() + 600000),
                         httpOnly: true,
                     });
                 } catch (error) {
