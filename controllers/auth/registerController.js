@@ -45,6 +45,10 @@ export default class authController {
                     registerUser.tokens = registerUser.tokens.concat({
                         token,
                     });
+                    res.cookie('jwt', token, {
+                        expires: new Date(Date.now() + 30000),
+                        httpOnly: true,
+                    });
                 } catch (error) {
                     console.log(error);
                 }

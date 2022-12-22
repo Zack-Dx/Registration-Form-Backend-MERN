@@ -24,6 +24,11 @@ export default class loginController {
                     emailExists._id.toString(),
                     process.env.mySecret
                 );
+                res.cookie('jwt', token, {
+                    expires: new Date(Date.now() + 50000),
+                    httpOnly: true,
+                    // secure: true, (only for https)
+                });
                 return res.render('home');
             }
             return res.send('Invalid Credentials');
