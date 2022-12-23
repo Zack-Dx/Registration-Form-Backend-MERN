@@ -25,7 +25,7 @@ export default class loginController {
                     process.env.mySecret
                 );
                 res.cookie('jwt', token, {
-                    expires: new Date(Date.now() + 50000),
+                    expires: new Date(Date.now() + 500000),
                     httpOnly: true,
                     // secure: true, (only for https)
                 });
@@ -35,6 +35,18 @@ export default class loginController {
         } catch (error) {
             console.log(error);
             return res.send('Invalid Credentials');
+        }
+    }
+    static async logout(req, res) {
+        try {
+            res.clearCookie('jwt');
+            console.log(req.user);
+            req.user.tokens = [];
+            await req.user.save();
+            res.redirect('/login');
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('error');
         }
     }
 }
