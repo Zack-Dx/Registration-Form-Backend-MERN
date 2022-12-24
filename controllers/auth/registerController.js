@@ -31,7 +31,6 @@ export default class authController {
                 !lastName ||
                 !email ||
                 !phone ||
-                !avatar ||
                 !password ||
                 !cpassword
             ) {
@@ -81,7 +80,7 @@ export default class authController {
                 }
 
                 await registerUser.save();
-                return res.redirect('/');
+                return res.redirect('login');
             }
         } catch (error) {
             console.log(error);
