@@ -40,7 +40,6 @@ export default class loginController {
     static async logout(req, res) {
         try {
             res.clearCookie('jwt');
-            console.log(req.user);
             req.user.tokens = [];
             await req.user.save();
             res.redirect('/login');

@@ -20,6 +20,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(fileUpload({ useTempFiles: true }));
 app.use(express.urlencoded({ extended: false }));
+app.use((req, res, next) => {
+    let user = req.cookies.jwt;
+    res.locals.user = user;
+    next();
+});
 app.use(router);
 
 app.listen(PORT, () => {
