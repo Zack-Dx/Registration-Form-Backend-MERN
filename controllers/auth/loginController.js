@@ -11,6 +11,7 @@ export default class loginController {
         try {
             const { email, password } = req.body;
             if (!email || !password) {
+                req.flash('error', 'All fields are required.');
                 return res.redirect('/login');
             }
             const emailExists = await User.findOne({ email });
@@ -31,7 +32,8 @@ export default class loginController {
                 });
                 return res.redirect('/');
             }
-            return res.send('Invalid Credentials');
+            req.flash('error', 'Invalid Credentials');
+            return res.redirect('/login');
         } catch (error) {
             console.log(error);
             return res.send('Invalid Credentials');

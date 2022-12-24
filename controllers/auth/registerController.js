@@ -11,7 +11,7 @@ cloudinary.config({
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 export default class authController {
-    static register(req, res) {
+    static async register(req, res) {
         return res.render('register');
     }
     static async postRegister(req, res) {
@@ -31,16 +31,18 @@ export default class authController {
                 !lastName ||
                 !email ||
                 !phone ||
+                !avatar ||
                 !password ||
                 !cpassword
             ) {
+                req.flash('error', 'All fields are required.');
                 return res.redirect('/register');
             } else if (password != cpassword) {
-                return res.json({
-                    message: `Passwords doesn't match`,
-                });
+                req.flash('error', "Password doesn't match");
+                return res.redirect('/register');
             } else if (userExists) {
-                return res.json({ message: 'Email already taken.' });
+                req.flash('error', 'Email already exists!');
+                return res.redirect('/register');
             } else {
                 const file = req.files.avatar;
                 const myCloud = await cloudinary.v2.uploader.upload(

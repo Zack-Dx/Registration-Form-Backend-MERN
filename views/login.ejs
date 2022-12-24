@@ -5,21 +5,24 @@
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
                     class="w-full" alt="Sample image" />
             </div>
-            <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
+            <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0 ">
+                <span class="mb-4 text-red-500  ">
+                    <%=messages.error %>
+                </span>
                 <form action="/login" method="POST">
 
                     <!-- Email input -->
                     <div class="mb-6">
                         <input type="text" name="email"
                             class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                            id="exampleFormControlInput2" placeholder="Email address" />
+                            id="email" placeholder="Email address" />
                     </div>
 
                     <!-- Password input -->
                     <div class="mb-6">
                         <input type="password" name="password"
                             class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                            id="exampleFormControlInput2" placeholder="Password" />
+                            id="password" placeholder="Password" />
                     </div>
 
 

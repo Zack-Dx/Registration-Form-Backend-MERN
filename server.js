@@ -5,6 +5,8 @@ import { router } from './routes/web.js';
 import expressLayouts from 'express-ejs-layouts';
 import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
+import session from 'express-session';
+import flash from 'express-flash';
 dotenv.config();
 
 const PORT = process.env.PORT;
@@ -18,13 +20,24 @@ app.set('view engine', 'ejs');
 //Router
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+    session({
+        secret: process.env.cookie_Secret,
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 24 hours
+    })
+);
+app.use(flash());
 app.use(fileUpload({ useTempFiles: true }));
 app.use(express.urlencoded({ extended: false }));
+
 app.use((req, res, next) => {
     let user = req.cookies.jwt;
     res.locals.user = user;
     next();
 });
+
 app.use(router);
 
 app.listen(PORT, () => {
